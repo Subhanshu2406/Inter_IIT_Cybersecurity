@@ -70,6 +70,7 @@ static uint64_t g_hs_ms     = 0;
 static uint64_t g_data_cycles = 0;
 static uint64_t g_data_ms     = 0;
 static uint32_t g_data_bytes  = 0;
+static uint64_t g_pqc_cycles  = 0;  // PQC key exchange occurs inside handshake
 static uintptr_t g_heap_base      = 0;
 static uintptr_t g_heap_after_hs  = 0;
 static uintptr_t g_heap_after_app = 0;
@@ -462,6 +463,7 @@ static int run_dtls13_demo(void)
     uint64_t hs_ms = (CPU_HZ_EST > 0u) ? (hs_cycles * 1000u / CPU_HZ_EST) : 0u;
     g_hs_cycles = hs_cycles;
     g_hs_ms = hs_ms;
+    g_pqc_cycles = hs_cycles; // PQC key exchange is part of the handshake
     g_heap_after_hs = heap_usage_bytes();
     printf("Handshake complete in %llu cycles (~%llu ms at %u Hz).\n",
            (unsigned long long)hs_cycles,
@@ -537,6 +539,8 @@ int main(void)
                (unsigned long long)g_hs_cycles,
                (unsigned long long)g_hs_ms,
                CPU_HZ_EST);
+        printf("PQC key exchange cycles (within handshake): %llu cycles\n",
+               (unsigned long long)g_pqc_cycles);
     }
     if (status == 0 && g_data_cycles > 0 && g_data_ms > 0) {
         // Throughput over the single app-data exchange

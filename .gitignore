@@ -48,3 +48,4 @@ host/logging
 host/server
 host/dtls13_psk_server
 host/argparse
+host/certs_dilithium
