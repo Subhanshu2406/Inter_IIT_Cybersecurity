@@ -67,7 +67,9 @@ litex_sim --csr-json csr.json --cpu-type=vexriscv --cpu-variant=full --integrate
 ## 7. Run simulation with ethernet
 ```
 litex_sim --csr-json csr.json --cpu-type=vexriscv --cpu-variant=full --integrated-main-ram-size=0x06400000 --with-ethernet
+
 litex_bare_metal_demo --build-path=build/sim
+
 litex_sim --csr-json csr.json --cpu-type=vexriscv --cpu-variant=full --integrated-main-ram-size=0x06400000 --ram-init=boot.bin --with-ethernet
 ```
 
@@ -80,11 +82,11 @@ To update the firmware:
 3. Re-run the simulation with your updated firmware:  
 
 
-## 9. Run DTLS 1.3 with Dilithium PQC CA Certificate Authentication
+## 9. Run DTLS 1.3 with Dilithium PQC CA Certificate Server
 
-This demo uses mutual TLS authentication with **Dilithium Post-Quantum Cryptography (PQC)** CA-signed certificates for quantum-resistant security.
+This demo uses mutual TLS authentication with **Dilithium Post-Quantum Cryptography (PQC)**, CA-signed certificates for quantum-resistant security.
 
-### 1) Building wolfSSL Library for the server
+### 1: Building wolfSSL Library for the server
 
 ```bash
 git clone https://github.com/wolfSSL/wolfssl.git
@@ -96,7 +98,7 @@ sudo make install
 sudo ldconfig
 ```
 
-### 2) Generate Dilithium PQC Certificates
+### 2: Generate Dilithium PQC Certificates
 
 ```bash
 # Activate virtual environment
@@ -119,7 +121,7 @@ This creates:
 
 **Note**: Currently using P-256 ECC with Dilithium naming. For true ML-DSA/Dilithium, run `./host/install_pqc_wolfssl.sh` to build wolfSSL with liboqs support.
 
-### 3) Build the Dilithium PQC Server
+### 3: Build the Dilithium PQC Server
 
 ```bash
 gcc host/dtls13_dilithium_server.c -o host/server \
@@ -129,13 +131,13 @@ gcc host/dtls13_dilithium_server.c -o host/server \
     -lwolfssl
 ```
 
-### 4) Rebuild the Client Firmware
+### 4: Rebuild the Client Firmware
 
 ```bash
 litex_bare_metal_demo --build-path=build/sim
 ```
 
-### 5) Configure tap0 Network Interface
+### 5: Configure tap0 Network Interface
 
 ```bash
 # If tap0 exists and is busy, remove it first:
@@ -147,13 +149,8 @@ sudo ip addr add 192.168.1.100/24 dev tap0
 sudo ip link set tap0 up
 ```
 
-### 6) Start the Dilithium PQC DTLS Server (Terminal 1)
+### 6: Start the Dilithium PQC DTLS Server (Terminal 1)
 
-```bash
-./run_server.sh
-```
-
-Or run directly:
 ```bash
 ./host/server
 ```
@@ -166,12 +163,12 @@ The server will:
 - Use TLS13-AES128-GCM-SHA256 cipher suite
 - Enable Kyber post-quantum key exchange
 
-### 7) Run the LiteX Simulation Client (Terminal 2)
+### 7: Run the LiteX Simulation Client (Terminal 2)
 
 In a new terminal:
 
 ```bash
-./run_client_sim.sh
+litex_sim --csr-json csr.json --cpu-type=vexriscv --cpu-variant=full --integrated-main-ram-size=0x06400000 --ram-init=boot.bin --with-ethernet
 ```
 
 **Prerequisites**: Ensure `meson` and `ninja-build` are installed system-wide:
