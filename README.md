@@ -12,6 +12,181 @@ Ensure your system has the following installed:
 
 ---
 
+## Repository Structure
+
+This repository contains a complete RISC-V embedded system with Post-Quantum Cryptography support, organized into the following directories:
+
+### Core Directories
+
+#### `boot/`
+Bare-metal firmware for the RISC-V embedded client:
+- **`main.c`** - Main client firmware implementing DTLS 1.3 handshake with Dilithium PQC certificates
+- **`crt0.d`** / **`linker.ld`** - RISC-V bootloader and memory layout configuration
+- **`Makefile`** - Build system for compiling the firmware
+- **`wolfssl/`** - WolfSSL/WolfCrypt headers and certificate data
+  - **`certs_dilithium_data.h`** - Auto-generated C arrays containing embedded Dilithium certificates (CA, client cert, client key)
+- **`src/`** - Additional firmware source files
+- **`wolfcrypt/`** - WolfCrypt cryptographic library headers
+
+#### `host/`
+Host-side server implementations and certificate generation tools:
+- **`dtls13_dilithium_server.c`** - DTLS 1.3 server with Dilithium PQC support
+- **`dtls13_ca_server.c`** - CA-based DTLS server implementation
+- **`dtls13_pqc_server.c`** - Generic PQC DTLS server
+- **`server`** - Compiled server binary
+- **`generate_dilithium_certs_p256.sh`** - Primary script for generating Dilithium certificates with P-256 hybrid approach
+- **`generate_dilithium_certs.sh`** / **`generate_dilithium_certs_simple.sh`** - Alternative certificate generation scripts
+- **`generate_dilithium_certs.c`** - C implementation for certificate generation
+- **`certs_dilithium_to_header.py`** - Converts PEM certificates to C header arrays for firmware embedding
+- **`certs_to_header.py`** - Generic certificate-to-header conversion utility
+- **`generate_ca_certs.sh`** / **`generate_pqc_certs.sh`** - Alternative certificate generation scripts
+- **`install_pqc_wolfssl.sh`** - WolfSSL PQC installation automation script
+- **`udp_echo_server.py`** - Simple UDP echo server for testing
+- **`certs/`** - Traditional (non-PQC) certificate storage
+- **`certs_dilithium/`** - Generated Dilithium PQC certificates (ca-cert.pem, server-cert.pem, client-cert.pem, keys)
+
+#### `build/`
+Build artifacts and intermediate files:
+- **`sim/`** - LiteX simulation build output (CSR definitions, Verilog, memory maps)
+
+### LiteX Framework Modules
+
+These directories contain the LiteX SoC framework and peripherals:
+
+#### `litex/`
+Main LiteX SoC framework - provides FPGA/simulation infrastructure for RISC-V CPU and peripherals
+
+#### `litex-boards/`
+Board support packages and hardware platform definitions
+
+#### `litedram/`
+LiteDRAM controller - DRAM memory controller core
+
+#### `liteeth/`
+LiteEth - Ethernet MAC and PHY implementation (used for network communication in this project)
+
+#### `litescope/`
+Logic analyzer for debugging FPGA designs
+
+#### `litesdcard/`
+SD card controller module
+
+#### `litespi/`
+SPI flash controller
+
+#### `litesata/`
+SATA controller implementation
+
+#### `litepcie/`
+PCIe controller core
+
+#### `liteiclink/`
+Inter-chip communication links (SerDes)
+
+#### `litejesd204b/`
+JESD204B high-speed serial interface
+
+#### `litei2c/`
+I2C controller implementation
+
+### CPU Cores
+
+RISC-V and other CPU implementations in Python HDL format:
+
+#### `pythondata-cpu-vexriscv/`
+**VexRiscv** - Primary RISC-V CPU core used in this project (32-bit, customizable pipeline)
+
+#### `pythondata-cpu-vexriscv-smp/`
+VexRiscv SMP - Multi-core variant
+
+#### `pythondata-cpu-vexiiriscv/`
+VexiiRiscv - Next-generation VexRiscv implementation
+
+#### Other CPU Cores:
+- **`pythondata-cpu-lm32/`** - LatticeMico32 soft processor
+- **`pythondata-cpu-minerva/`** - Minerva RISC-V core
+- **`pythondata-cpu-mor1kx/`** - OpenRISC processor
+- **`pythondata-cpu-naxriscv/`** - NaxRiscv RISC-V core
+- **`pythondata-cpu-sentinel/`** - Sentinel RISC-V core
+- **`pythondata-cpu-serv/`** - SERV bit-serial RISC-V core
+
+### Supporting Libraries
+
+#### `migen/`
+Migen - Python-based HDL (Hardware Description Language) toolbox, foundation for LiteX
+
+#### `pythondata-software-compiler_rt/`
+Compiler runtime support libraries
+
+#### `pythondata-software-picolibc/`
+Picolibc - Embedded C library for bare-metal systems
+
+#### `pythondata-misc-tapcfg/`
+TAP network interface configuration utilities
+
+#### `pythondata-misc-usb_ohci/`
+USB OHCI controller implementation
+
+#### `valentyusb/`
+USB device controller core
+
+#### `wolfssl/`
+WolfSSL library source code with PQC support (Dilithium, ML-KEM, Kyber)
+
+### Configuration and Environment
+
+#### `litex-env/`
+Python virtual environment containing all LiteX dependencies and tools
+
+#### `litex_setup.py`
+Master setup script for initializing LiteX environment and installing toolchains
+
+### Root Files
+
+- **`boot.fbi`** - Firmware binary image (alternative format)
+- **`csr.json`** - Control/Status Register definitions for the simulated SoC
+- **`README.md`** - This comprehensive setup guide
+- **`README.md.backup`** - Backup of previous README version
+- **`CA_IMPLEMENTATION_SUMMARY.md`** - Certificate Authority implementation documentation
+- **`demo_results.md`** - Demonstration results and performance metrics
+- **`DILITHIUM_DEMO_RESULTS.md`** - Dilithium-specific test results
+- **`csr.json`** - SoC CSR (Control and Status Register) map
+
+### Data Flow
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Certificate Generation                                      │
+│  host/generate_dilithium_certs_p256.sh                      │
+│         ↓                                                    │
+│  host/certs_dilithium/*.pem                                 │
+│         ↓                                                    │
+│  host/certs_dilithium_to_header.py                          │
+│         ↓                                                    │
+│  boot/wolfssl/certs_dilithium_data.h                        │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│  Firmware Build                                              │
+│  boot/main.c + boot/wolfssl/certs_dilithium_data.h          │
+│         ↓                                                    │
+│  litex_bare_metal_demo                                       │
+│         ↓                                                    │
+│  boot.bin (RISC-V firmware with embedded PQC certs)          │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│  Runtime Execution                                           │
+│  Server: host/server (192.168.1.100:6000)                   │
+│         ↕ DTLS 1.3 + Dilithium + Kyber                       │
+│  Client: litex_sim + boot.bin (192.168.1.50:60000)          │
+│         ↑                                                    │
+│  VexRiscv CPU @ 1MHz with LiteEth network                    │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## Phase 1: Initial Setup and Environment Configuration
 
 ### Step 1: Clone the Repository
