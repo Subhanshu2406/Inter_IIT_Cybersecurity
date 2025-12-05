@@ -17,6 +17,7 @@
 #include <wolfssl/options.h>
 #include <wolfssl/ssl.h>
 #include <wolfssl/error-ssl.h>
+#include <wolfssl/wolfcrypt/error-crypt.h>
 
 #ifdef min
 #undef min
@@ -253,6 +254,15 @@ static int dtls_io_send(WOLFSSL* ssl, char* buf, int sz, void* ctx)
 
 #endif // CSR_ETHMAC_BASE
 
+// Accept certs even if device clock is wrong (ignore time validity errors).
+static int verify_allow_badtime(int preverify, WOLFSSL_X509_STORE_CTX* store)
+{
+    int err = wolfSSL_X509_STORE_CTX_get_error(store);
+    if (err == ASN_BEFORE_DATE_E || err == ASN_AFTER_DATE_E)
+        return 1;
+    return preverify;
+}
+
 // ------------------------ DTLS demo ------------------------
 
 static int run_dtls13_demo(void)
@@ -332,9 +342,11 @@ static int run_dtls13_demo(void)
     }
     printf("Dilithium client private key loaded successfully.\n");
 
-    // 3. Enable Mutual Authentication
-    wolfSSL_CTX_set_verify(ctx, WOLFSSL_VERIFY_PEER | WOLFSSL_VERIFY_FAIL_IF_NO_PEER_CERT, 0);
-    printf("Mutual authentication enabled with PQC.\n");
+    // 3. Enable Mutual Authentication (ignore bad time since no RTC on target)
+    wolfSSL_CTX_set_verify(ctx,
+        WOLFSSL_VERIFY_PEER | WOLFSSL_VERIFY_FAIL_IF_NO_PEER_CERT,
+        verify_allow_badtime);
+    printf("Mutual authentication enabled with PQC (time validity ignored).\n");
 
     // 4. Set Cipher Suite (TLS 1.3)
     wolfSSL_CTX_set_cipher_list(ctx, "TLS13-AES128-GCM-SHA256");

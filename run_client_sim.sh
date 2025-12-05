@@ -1,12 +1,19 @@
 #!/bin/bash
-cd /home/raghav-maheshwari/Litex-Running
-source litex-env/bin/activate
+set -euo pipefail
+
+# Resolve repository root based on script location to avoid hard-coded paths.
+SCRIPT_DIR="$(cd -- "$(dirname "$0")" && pwd)"
+cd "$SCRIPT_DIR"
+
+source "$SCRIPT_DIR/litex-env/bin/activate"
+
 echo "=== CLIENT TERMINAL ==="
 echo "Starting LiteX simulation with DTLS client..."
+
 # Run with sudo while preserving the virtual environment's Python
 sudo -E PATH="$PATH" PYTHONPATH="$PYTHONPATH" \
-    "$PWD/litex-env/bin/python3" \
-    "$PWD/litex-env/bin/litex_sim" \
+    "$SCRIPT_DIR/litex-env/bin/python3" \
+    "$SCRIPT_DIR/litex-env/bin/litex_sim" \
     --csr-json csr.json \
     --cpu-type=vexriscv \
     --cpu-variant=full \

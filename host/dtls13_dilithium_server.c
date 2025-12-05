@@ -167,8 +167,54 @@ int main(int argc, char** argv)
     
 #ifdef HAVE_PQC
     printf("[Init] Enabling Post-Quantum Key Exchange (Kyber)...\n");
-    // Enable PQC groups if available
-    wolfSSL_CTX_set_groups_list(ctx, "P384_KYBER_LEVEL3");
+    // Enable PQC hybrid groups (only those compiled into this wolfSSL build)
+    int pqc_group_ids[12];
+    int pqc_group_cnt = 0;
+
+    /* ML-KEM hybrid groups (newer wolfSSL builds) */
+#ifdef WOLFSSL_SECP384R1MLKEM1024
+    pqc_group_ids[pqc_group_cnt++] = WOLFSSL_SECP384R1MLKEM1024;
+#endif
+#ifdef WOLFSSL_SECP384R1MLKEM768
+    pqc_group_ids[pqc_group_cnt++] = WOLFSSL_SECP384R1MLKEM768;
+#endif
+#ifdef WOLFSSL_SECP256R1MLKEM768
+    pqc_group_ids[pqc_group_cnt++] = WOLFSSL_SECP256R1MLKEM768;
+#endif
+#ifdef WOLFSSL_SECP256R1MLKEM512
+    pqc_group_ids[pqc_group_cnt++] = WOLFSSL_SECP256R1MLKEM512;
+#endif
+#ifdef WOLFSSL_X25519MLKEM768
+    pqc_group_ids[pqc_group_cnt++] = WOLFSSL_X25519MLKEM768;
+#endif
+#ifdef WOLFSSL_X25519MLKEM512
+    pqc_group_ids[pqc_group_cnt++] = WOLFSSL_X25519MLKEM512;
+#endif
+
+    /* Kyber hybrid groups (older wolfSSL Kyber codepoints) */
+#ifdef WOLFSSL_P384_KYBER_LEVEL3
+    pqc_group_ids[pqc_group_cnt++] = WOLFSSL_P384_KYBER_LEVEL3;
+#endif
+#ifdef WOLFSSL_P256_KYBER_LEVEL3
+    pqc_group_ids[pqc_group_cnt++] = WOLFSSL_P256_KYBER_LEVEL3;
+#endif
+#ifdef WOLFSSL_P256_KYBER_LEVEL1
+    pqc_group_ids[pqc_group_cnt++] = WOLFSSL_P256_KYBER_LEVEL1;
+#endif
+#ifdef WOLFSSL_X25519_KYBER_LEVEL1
+    pqc_group_ids[pqc_group_cnt++] = WOLFSSL_X25519_KYBER_LEVEL1;
+#endif
+#ifdef WOLFSSL_X25519_KYBER_LEVEL3
+    pqc_group_ids[pqc_group_cnt++] = WOLFSSL_X25519_KYBER_LEVEL3;
+#endif
+
+    if (pqc_group_cnt > 0) {
+        if (wolfSSL_CTX_set_groups(ctx, pqc_group_ids, pqc_group_cnt) != WOLFSSL_SUCCESS) {
+            fprintf(stderr, "[Init] ⚠ PQC group selection failed (IDs). Continuing without forcing PQC groups.\n");
+        }
+    } else {
+        printf("[Init] ⚠ No PQC hybrid groups compiled in; continuing without forcing PQC groups.\n");
+    }
 #endif
     
     printf("[Init] Setting custom I/O callbacks...\n");
@@ -252,9 +298,8 @@ int main(int argc, char** argv)
     char buf[2048];
     printf("[Data] Waiting for application data from client...\n");
     
-    // Wait for application data with timeout handling
-    int read_attempts = 0;
-    while (read_attempts < 20) {  // Try for up to 100 seconds (20 * 5s timeout)
+    // Wait for application data with timeout handling (keep running until data or fatal error)
+    for (;;) {
         ret = wolfSSL_read(ssl, buf, sizeof(buf));
         if (ret > 0) {
             printf("\n=== Application Data Received ===\n");
@@ -275,12 +320,11 @@ int main(int argc, char** argv)
                 int write_err = wolfSSL_get_error(ssl, write_ret);
                 fprintf(stderr, "[Data] ✗ Echo failed: write returned %d, error: %d\n", write_ret, write_err);
             }
-            break;  // Successfully received and echoed data
+            continue;  // stay up for additional messages
         }
         
         int err = wolfSSL_get_error(ssl, ret);
         if (err == WOLFSSL_ERROR_WANT_READ) {
-            printf("[Data] No data yet (attempt %d/20), waiting...\n", read_attempts + 1);
             // Use select to wait for incoming data
             fd_set readfds;
             FD_ZERO(&readfds);
@@ -289,24 +333,21 @@ int main(int argc, char** argv)
             tv.tv_sec = 5;  // 5 second timeout
             tv.tv_usec = 0;
             int sel = select(net.sock + 1, &readfds, NULL, NULL, &tv);
-            if (sel > 0) {
-                printf("[Data] Data available on socket\n");
-            } else if (sel == 0) {
-                printf("[Data] Select timeout\n");
+            if (sel == 0) {
+                printf("[Data] Select timeout (no app data yet)\n");
             }
-            read_attempts++;
+            continue;
+        } else if (err == WOLFSSL_ERROR_WANT_WRITE) {
+            printf("[Data] WANT_WRITE while reading, retrying...\n");
+            usleep(10000);
             continue;
         } else {
             fprintf(stderr, "[Data] ✗ wolfSSL_read failed: return=%d, error=%d\n", ret, err);
             char error_buf[80];
             wolfSSL_ERR_error_string(err, error_buf);
             fprintf(stderr, "[Data] Error string: %s\n", error_buf);
-            break;
+            break;  // fatal
         }
-    }
-    
-    if (read_attempts >= 20) {
-        printf("[Data] ⚠ Timeout waiting for application data after handshake\n");
     }
 
     printf("\n=== Shutting Down ===\n");

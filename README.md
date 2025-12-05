@@ -63,7 +63,15 @@ Run simulation with the generated boot binary:
 ```
 litex_sim --csr-json csr.json --cpu-type=vexriscv --cpu-variant=full --integrated-main-ram-size=0x06400000 --ram-init=boot.bin
 ```
-## 7. Modify Firmware (boot Directory)
+
+## 7. Run simulation with ethernet
+```
+litex_sim --csr-json csr.json --cpu-type=vexriscv --cpu-variant=full --integrated-main-ram-size=0x06400000 --with-ethernet
+litex_bare_metal_demo --build-path=build/sim
+litex_sim --csr-json csr.json --cpu-type=vexriscv --cpu-variant=full --integrated-main-ram-size=0x06400000 --ram-init=boot.bin --with-ethernet
+```
+
+## 8. Modify Firmware (boot Directory)
 
 All embedded C source files reside in the boot/ directory.  
 To update the firmware:  
@@ -71,12 +79,8 @@ To update the firmware:
 2. Rebuild and test via LiteX simulation.  
 3. Re-run the simulation with your updated firmware:  
 
-```
-litex_bare_metal_demo --build-path=build/sim
-litex_sim --csr-json csr.json --cpu-type=vexriscv --cpu-variant=full --integrated-main-ram-size=0x06400000 --ram-init=boot.bin
-```
 
-## 8. Run DTLS 1.3 with Dilithium PQC CA Certificate Authentication
+## 9. Run DTLS 1.3 with Dilithium PQC CA Certificate Authentication
 
 This demo uses mutual TLS authentication with **Dilithium Post-Quantum Cryptography (PQC)** CA-signed certificates for quantum-resistant security.
 
@@ -118,7 +122,11 @@ This creates:
 ### 3) Build the Dilithium PQC Server
 
 ```bash
-gcc host/dtls13_dilithium_server.c -o host/dtls13_dilithium_server -I/usr/local/include -L/usr/local/lib -lwolfssl -lm
+gcc host/dtls13_dilithium_server.c -o host/server \
+    -I/usr/local/include \
+    -L/usr/local/lib \
+    -Wl,-rpath=/usr/local/lib \
+    -lwolfssl
 ```
 
 ### 4) Rebuild the Client Firmware
@@ -147,7 +155,7 @@ sudo ip link set tap0 up
 
 Or run directly:
 ```bash
-./host/dtls13_dilithium_server
+./host/server
 ```
 
 The server will:
@@ -229,28 +237,3 @@ sudo tcpdump -i tap0 -nn udp and port 6000
 ✅ **Post-quantum naming convention** applied throughout codebase  
 
 For true ML-DSA/Dilithium quantum-resistant algorithms, build wolfSSL with liboqs integration.
-
-
-Terminal_Client1: cd /home/raghav-maheshwari/Litex-Running
-./run_server.sh
-           or
-cd /home/raghav-maheshwari/Litex-Running
-./host/dtls13_dilithium_server
-
-
-Terminal_Server: cd /home/raghav-maheshwari/Litex-Running
-./run_client_sim.sh
-           or
-
-cd /home/raghav-maheshwari/Litex-Running
-source litex-env/bin/activate
-sudo -E PATH="$PATH" PYTHONPATH="$PYTHONPATH" \
-    "$PWD/litex-env/bin/python3" \
-    "$PWD/litex-env/bin/litex_sim" \
-    --csr-json csr.json \
-    --cpu-type=vexriscv \
-    --cpu-variant=full \
-    --integrated-main-ram-size=0x06400000 \
-    --ram-init=boot.bin \
-    --with-ethernet
-
