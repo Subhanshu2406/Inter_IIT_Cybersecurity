@@ -13,20 +13,15 @@ Ensure your system has the following installed:
 - Build tools: build-essential, cmake, etc.
 - Linux environment (Ubuntu recommended)
 
-## 1. Clone the Repository
-Clone the project repository containing the LiteX configuration and simulation modules:
-```
-git clone https://github.com/QTrino-Labs-Pvt-Ltd/Constraint_Env_Sim.git
-cd Constraint_Env_Sim
-```
-## 2. Create and Activate Python Virtual Environment
+## 1. Create and Activate Python Virtual Environment
 It is recommended to isolate LiteX and Python dependencies using a virtual environment.
 ```
 python3 -m venv litex-env
 source litex-env/bin/activate
 ```
 Your shell should now indicate the active environment (litex-env).
-## 3. Run LiteX Setup Script
+
+## 2. Run LiteX Setup Script
 Make the setup script executable and initialize the LiteX environment.
 ```
 chmod +x litex_setup.py
@@ -36,7 +31,7 @@ Install additional Python dependencies:
 ```
 pip3 install meson ninja
 ```
-## 4. Install RISC-V Toolchain and Required Packages
+## 3. Install RISC-V Toolchain and Required Packages
 Install the RISC-V GCC toolchain using the LiteX setup utility:
 Note: sudo is required because the toolchain installs system-wide.
 
@@ -48,13 +43,13 @@ Install system dependencies:
 sudo apt install libevent-dev libjson-c-dev verilator
 ```
 These packages enable simulation and LiteX SoC generation.
-## 5. Run LiteX Simulation Environment
+## 4. Run LiteX Simulation Environment
 Launch the LiteX simulation with a RISC-V VexRiscv CPU core:
 ```
 litex_sim --csr-json csr.json --cpu-type=vexriscv --cpu-variant=full --integrated-main-ram-size=0x06400000
 ```
 Use CTRL + C to exit the simulation.
-## 6. Build and Run the LiteX Bare-Metal Demo
+## 5. Build and Run the LiteX Bare-Metal Demo
 Generate the bare-metal demo software:
 ```
 litex_bare_metal_demo --build-path=build/sim
@@ -64,7 +59,7 @@ Run simulation with the generated boot binary:
 litex_sim --csr-json csr.json --cpu-type=vexriscv --cpu-variant=full --integrated-main-ram-size=0x06400000 --ram-init=boot.bin
 ```
 
-## 7. Run simulation with ethernet
+## 6. Run simulation with ethernet
 ```
 litex_sim --csr-json csr.json --cpu-type=vexriscv --cpu-variant=full --integrated-main-ram-size=0x06400000 --with-ethernet
 
@@ -73,16 +68,7 @@ litex_bare_metal_demo --build-path=build/sim
 litex_sim --csr-json csr.json --cpu-type=vexriscv --cpu-variant=full --integrated-main-ram-size=0x06400000 --ram-init=boot.bin --with-ethernet
 ```
 
-## 8. Modify Firmware (boot Directory)
-
-All embedded C source files reside in the boot/ directory.  
-To update the firmware:  
-1. Modify or add C files under boot/.  
-2. Rebuild and test via LiteX simulation.  
-3. Re-run the simulation with your updated firmware:  
-
-
-## 9. Run DTLS 1.3 with Dilithium PQC CA Certificate Server
+## 7. Run DTLS 1.3 with Dilithium PQC CA Certificate Server
 
 This demo uses mutual TLS authentication with **Dilithium Post-Quantum Cryptography (PQC)**, CA-signed certificates for quantum-resistant security.
 
