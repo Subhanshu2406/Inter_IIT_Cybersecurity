@@ -39,3 +39,12 @@ boot.bin
 .vscode/settings.json
 host/dtls13_psk_server
 host/dtls13_psk_server
+server.log
+simulation_output.log
+client.log
+host/sys
+host/socket
+host/logging
+host/server
+host/dtls13_psk_server
+host/argparse
