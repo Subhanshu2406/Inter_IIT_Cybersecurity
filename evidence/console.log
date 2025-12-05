@@ -1,0 +1,844 @@
+--============= Liftoff! ===============--
+
+LiteX DTLS 1.3 Dilithium PQC client (wolfSSL)
+Post-Quantum Cryptography with Dilithium certificates
+DEBUG: About to call run_dtls13_demo
+DEBUG: Entered run_dtls13_demo
+
+=== DTLS 1.3 Client (Dilithium PQC) ===
+Using Post-Quantum Cryptography Certificates
+Local IP:  192.168.1.50
+Remote IP: 192.168.1.100
+Local port: 60000, server port: 6000
+Ethernet init...
+Resolving ARP for remote...[udp.c] send_packet len=60 slot=0
+[udp.c] send_packet len=60 slot=1
+ done.
+wolfSSL Entering DTLSv1_3_client_method_ex
+wolfSSL Entering wolfSSL_CTX_new_ex
+wolfSSL Entering wolfSSL_CertManagerNew
+heap param is null
+DYNAMIC_TYPE_CERT_MANAGER Allocating = 160 bytes
+wolfSSL Leaving wolfSSL_CTX_new_ex, return 0
+Loading Dilithium CA certificate (579 bytes)...
+wolfSSL Entering wolfSSL_CTX_load_verify_buffer_ex
+wolfSSL Entering ProcessBuffer
+Adding a CA
+        Parsing new CA
+Getting Cert Name
+Getting Cert Name
+wolfSSL Entering GetAlgoId
+wolfSSL Entering DecodeCertExtensions
+wolfSSL Entering DecodeBasicCaConstraint
+wolfSSL Entering DecodeKeyUsage
+wolfSSL Entering DecodeSubjKeyId
+wolfSSL Entering DecodeAuthKeyId
+        Parsed new CA
+        -  issuer:  '/C=US/ST=State/L=City/O=LiteX-PQC/OU=CA/CN=LiteX Dilithium CA'
+        -  subject: '/C=US/ST=State/L=City/O=LiteX-PQC/OU=CA/CN=LiteX Dilithium CA'
+        Freeing Parsed CA
+        Freeing der CA
+                OK Freeing der CA
+wolfSSL Leaving AddCA, return 0
+wolfSSL Leaving ProcessBuffer, return 1
+wolfSSL Leaving wolfSSL_CTX_load_verify_buffer_ex, return 1
+Dilithium CA certificate loaded successfully.
+Loading Dilithium client certificate (598 bytes)...
+wolfSSL Entering wolfSSL_CTX_use_certificate_buffer
+wolfSSL Entering ProcessBuffer
+Checking cert signature type
+Getting Cert Name
+Getting Cert Name
+wolfSSL Entering GetAlgoId
+ECDSA/ED25519/ED448 cert signature
+wolfSSL Leaving ProcessBuffer, return 1
+wolfSSL Leaving wolfSSL_CTX_use_certificate_buffer, return 1
+Dilithium client certificate loaded successfully.
+Loading Dilithium client private key (121 bytes)...
+wolfSSL Entering wolfSSL_CTX_use_PrivateKey_buffer
+wolfSSL Entering ProcessBuffer
+Not an RSA key
+wolfSSL Leaving ProcessBuffer, return 1
+wolfSSL Leaving wolfSSL_CTX_use_PrivateKey_buffer, return 1
+Dilithium client private key loaded successfully.
+wolfSSL Entering wolfSSL_CTX_set_verify
+Mutual authentication enabled with PQC (time validity ignored).
+wolfSSL Entering wolfSSL_CTX_set_cipher_list
+Cipher suite set to TLS13-AES128-GCM-SHA256.
+Post-Quantum Key Exchange enabled (Kyber).
+wolfSSL Entering wolfSSL_new
+wolfSSL Entering ReinitSSL
+RNG_HEALTH_TEST_CHECK_SIZE = 128
+sizeof(seedB_data)         = 128
+wolfSSL Entering SetSSL_CTX
+wolfSSL Entering wolfSSL_NewSession
+InitSSL done. return 0 (success)
+wolfSSL_new InitSSL success
+wolfSSL Leaving wolfSSL_new InitSSL =, return 0
+wolfSSL Entering wolfSSL_CTX_set_options
+Starting DTLS 1.3 handshake with Dilithium PQC certificates...
+TLS 1.2 or lower
+wolfSSL Entering wolfSSL_connect
+wolfSSL Entering ReinitSSL
+wolfSSL Entering RetrySendAlert
+wolfSSL Entering SendTls13ClientHello
+Adding signature algorithms extension
+Adding supported versions extension
+wolfSSL Entering EccMakeKey
+wolfSSL Leaving EccMakeKey, return 0
+growing output buffer
+PSK Key Exchange Modes extension to write
+Key Share extension to write
+Supported Versions extension to write
+Signature Algorithms extension to write
+Supported Groups extension to write
+wolfSSL Entering Dtls13RtxFlushAcks
+qwerty
+wolfSSL Entering Dtls13RtxNewRecord
+Dtls13RtxNewRecord completed
+Entering Dtls13SendNow
+entering Dtls13SendFragment
+isProtected done
+recordHeaderLength done
+no buffer_error
+enter Dtls13RlAddPlaintextHeader
+Dtls13GetSeq done
+c16toa entering 1st time
+c16toa done 2nd time
+c16toa done 3rd time
+c32toa done 1st time
+c16toa done 3rd time
+Dtls13RlAddPlaintextHeader done
+before FragIsInOutputBuffer function
+[IO_SEND] requested sz=222, peer_port=6000
+[IO_SEND] got tx buffer 0x8000102a
+[udp.c] send_packet len=264 slot=0
+[UDP] TX 222 bytes to port 6000
+Shrinking output buffer
+Dtls13SendFragment completed
+before rtx != null function
+rtxRecord is not null
+Entering Dtls13RtxAddRecord
+wolfSSL Entering Dtls13RtxAddRecord
+Dtls13SendOneFragmentRtx completed
+wolfSSL Leaving SendTls13ClientHello, return 0
+connect state: CLIENT_HELLO_SENT
+Server state up to needed state.
+Progressing server state...
+ProcessReply...
+wolfSSL Entering RetrySendAlert
+growing input buffer
+[UDP] RX 144 bytes from 6000 -> 60000
+[UDP] RX handed 144 bytes to wolfSSL
+wolfSSL Entering Dtls13CheckWindow
+wolfSSL Entering Dtls13UpdateWindow
+wolfSSL Entering Dtls13RtxAddAck
+received record layer msg
+got HANDSHAKE
+wolfSSL Entering EarlySanityCheckMsgReceived
+wolfSSL Leaving EarlySanityCheckMsgReceived, return 0
+wolfSSL Entering Dtls13RtxMsgRecvd
+wolfSSL Entering DoTls13HandShakeMsgType
+processing server hello
+wolfSSL Entering DoTls13ServerHello
+HelloRetryRequest format
+Supported Versions extension received
+Skipping Supported Versions - already processed
+Cookie extension received
+wolfSSL Leaving Leaving TLSX_Parse, return 0
+wolfSSL Entering VerifyClientSuite
+wolfSSL Leaving DoTls13ServerHello, return 0
+wolfSSL Leaving DoTls13HandShakeMsgType(), return 0
+Shrinking input buffer
+ProcessReply done.
+connect state: HELLO_AGAIN
+wolfSSL Entering wolfSSL_connect_TLSv13
+wolfSSL Entering ReinitSSL
+wolfSSL Entering RetrySendAlert
+wolfSSL Entering SendTls13ClientHello
+Adding signature algorithms extension
+Adding supported versions extension
+Supported Versions extension free
+growing output buffer
+Supported Versions extension to write
+Cookie extension to write
+PSK Key Exchange Modes extension to write
+Key Share extension to write
+Signature Algorithms extension to write
+Supported Groups extension to write
+wolfSSL Entering Dtls13RtxFlushAcks
+qwerty
+wolfSSL Entering Dtls13RtxNewRecord
+Dtls13RtxNewRecord completed
+Entering Dtls13SendNow
+entering Dtls13SendFragment
+isProtected done
+recordHeaderLength done
+no buffer_error
+enter Dtls13RlAddPlaintextHeader
+Dtls13GetSeq done
+c16toa entering 1st time
+c16toa done 2nd time
+c16toa done 3rd time
+c32toa done 1st time
+c16toa done 3rd time
+Dtls13RlAddPlaintextHeader done
+before FragIsInOutputBuffer function
+[IO_SEND] requested sz=295, peer_port=6000
+[IO_SEND] got tx buffer 0x8000182a
+[udp.c] send_packet len=337 slot=1
+[UDP] TX 295 bytes to port 6000
+Shrinking output buffer
+Dtls13SendFragment completed
+before rtx != null function
+rtxRecord is not null
+Entering Dtls13RtxAddRecord
+wolfSSL Entering Dtls13RtxAddRecord
+Dtls13SendOneFragmentRtx completed
+wolfSSL Leaving SendTls13ClientHello, return 0
+connect state: HELLO_AGAIN_REPLY
+wolfSSL Entering RetrySendAlert
+growing input buffer
+[UDP] RX 144 bytes from 6000 -> 60000
+[UDP] RX handed 144 bytes to wolfSSL
+wolfSSL Entering Dtls13CheckWindow
+wolfSSL Entering Dtls13UpdateWindow
+wolfSSL Entering Dtls13RtxAddAck
+received record layer msg
+got HANDSHAKE
+wolfSSL Entering EarlySanityCheckMsgReceived
+wolfSSL Leaving EarlySanityCheckMsgReceived, return 0
+wolfSSL Entering Dtls13RtxMsgRecvd
+wolfSSL Entering DoTls13HandShakeMsgType
+processing server hello
+wolfSSL Entering DoTls13ServerHello
+Supported Versions extension received
+Key Share extension received
+wolfSSL Entering EccSharedSecret
+wolfSSL Leaving EccSharedSecret, return 0
+Skipping Supported Versions - already processed
+wolfSSL Leaving Leaving TLSX_Parse, return 0
+wolfSSL Entering VerifyClientSuite
+wolfSSL Leaving DoTls13ServerHello, return 0
+Derive Early Secret
+Derive Handshake Secret
+Derive Client Handshake Secret
+Derive Server Handshake Secret
+Derive Client Key
+Derive Server Key
+Derive Client IV
+Derive Server IV
+Derive SN Client key
+Derive SN Server key
+wolfSSL Entering Dtls13SetEpochKeys
+wolfSSL Entering Dtls13SetEpochKeys
+wolfSSL Leaving DoTls13HandShakeMsgType(), return 0
+Shrinking input buffer
+wolfSSL Entering Dtls13DoScheduledWork
+wolfSSL Entering RetrySendAlert
+growing input buffer
+[UDP] RX 68 bytes from 6000 -> 60000
+[UDP] RX handed 68 bytes to wolfSSL
+wolfSSL Entering DecryptTls13
+wolfSSL Entering Dtls13CheckWindow
+wolfSSL Entering Dtls13UpdateWindow
+wolfSSL Entering Dtls13RtxAddAck
+received record layer msg
+got HANDSHAKE
+wolfSSL Entering EarlySanityCheckMsgReceived
+wolfSSL Leaving EarlySanityCheckMsgReceived, return 0
+wolfSSL Entering Dtls13RtxMsgRecvd
+wolfSSL Entering DtlsMsgPoolReset
+wolfSSL Entering Dtls13RtxFlushBuffered
+Entering Dtls13FreeRtxBufferRecord
+Entering Dtls13FreeRtxBufferRecord
+wolfSSL Entering DoTls13HandShakeMsgType
+processing encrypted extensions
+wolfSSL Entering DoTls13EncryptedExtensions
+Supported Groups extension received
+wolfSSL Leaving Leaving TLSX_Parse, return 0
+wolfSSL Leaving DoTls13EncryptedExtensions, return 0
+wolfSSL Leaving DoTls13HandShakeMsgType(), return 0
+Shrinking input buffer
+wolfSSL Entering Dtls13DoScheduledWork
+wolfSSL Entering RetrySendAlert
+growing input buffer
+[udp.c] send_packet len=60 slot=0
+wolfSSL Entering wolfSSL_dtls_got_timeout
+wolfSSL Entering SendDtls13Ack
+growing output buffer
+write ack records
+epoch 1074310091 seq 0
+epoch 1178597248 seq 2
+wolfSSL Entering BuildTls13Message
+wolfSSL Entering EncryptTls13
+wolfSSL Leaving BuildTls13Message, return 0
+wolfSSL Entering Dtls13RtxFlushAcks
+[IO_SEND] requested sz=56, peer_port=6000
+[IO_SEND] got tx buffer 0x8000182a
+[udp.c] send_packet len=98 slot=1
+[UDP] TX 56 bytes to port 6000
+Shrinking output buffer
+wolfSSL Entering DtlsMsgPoolTimeout
+wolfSSL Leaving DtlsMsgPoolTimeout(), return 0
+wolfSSL Entering Dtls13RtxSendBuffered
+[UDP] recv timeout
+wolfSSL error occurred, error = 323 line:13458 file:src/tls13.c
+wolfSSL Entering wolfSSL_get_error
+wolfSSL Leaving wolfSSL_get_error, return -323
+TLS 1.3
+wolfSSL Entering wolfSSL_connect_TLSv13
+wolfSSL Entering ReinitSSL
+wolfSSL Entering RetrySendAlert
+wolfSSL Entering RetrySendAlert
+[UDP] RX 75 bytes from 6000 -> 60000
+[UDP] RX handed 75 bytes to wolfSSL
+wolfSSL Entering DecryptTls13
+wolfSSL Entering Dtls13CheckWindow
+wolfSSL Entering Dtls13UpdateWindow
+wolfSSL Entering Dtls13RtxAddAck
+received record layer msg
+got HANDSHAKE
+wolfSSL Entering EarlySanityCheckMsgReceived
+wolfSSL Leaving EarlySanityCheckMsgReceived, return 0
+wolfSSL Entering Dtls13RtxMsgRecvd
+wolfSSL Entering DtlsMsgPoolReset
+wolfSSL Entering Dtls13RtxFlushBuffered
+wolfSSL Entering DoTls13HandShakeMsgType
+processing certificate request
+wolfSSL Entering DoTls13CertificateRequest
+Signature Algorithms extension received
+wolfSSL Leaving Leaving TLSX_Parse, return 0
+wolfSSL Leaving DoTls13CertificateRequest, return 0
+wolfSSL Leaving DoTls13HandShakeMsgType(), return 0
+Shrinking input buffer
+wolfSSL Entering Dtls13DoScheduledWork
+wolfSSL Entering RetrySendAlert
+growing input buffer
+[UDP] RX 641 bytes from 6000 -> 60000
+[UDP] RX handed 641 bytes to wolfSSL
+wolfSSL Entering DecryptTls13
+wolfSSL Entering Dtls13CheckWindow
+wolfSSL Entering Dtls13UpdateWindow
+wolfSSL Entering Dtls13RtxAddAck
+received record layer msg
+got HANDSHAKE
+wolfSSL Entering EarlySanityCheckMsgReceived
+wolfSSL Leaving EarlySanityCheckMsgReceived, return 0
+wolfSSL Entering Dtls13RtxMsgRecvd
+wolfSSL Entering DtlsMsgPoolReset
+wolfSSL Entering Dtls13RtxFlushBuffered
+wolfSSL Entering DoTls13HandShakeMsgType
+processing certificate
+wolfSSL Entering DoTls13Certificate
+wolfSSL Entering ProcessPeerCerts
+Loading peer's cert chain
+        Parsing 0 bytes of cert extensions
+wolfSSL Leaving Leaving TLSX_Parse, return 0
+        Put another cert into chain
+Getting Cert Name
+Getting Cert Name
+wolfSSL Entering GetAlgoId
+wolfSSL Entering DecodeCertExtensions
+wolfSSL Entering DecodeBasicCaConstraint
+wolfSSL Entering DecodeKeyUsage
+wolfSSL Entering DecodeExtKeyUsage
+wolfSSL Entering DecodeSubjKeyId
+wolfSSL Entering DecodeAuthKeyId
+CA found
+Checking for trusted peer cert
+No matching trusted peer cert. Checking CAs
+Verifying Peer's cert
+wolfSSL Entering ConfirmSignature
+wolfSSL Leaving ConfirmSignature, return 0
+Getting Cert Name
+Getting Cert Name
+wolfSSL Entering GetAlgoId
+wolfSSL Entering DecodeCertExtensions
+wolfSSL Entering DecodeBasicCaConstraint
+wolfSSL Entering DecodeKeyUsage
+wolfSSL Entering DecodeExtKeyUsage
+wolfSSL Entering DecodeSubjKeyId
+wolfSSL Entering DecodeAuthKeyId
+CA found
+Verified Peer's cert
+wolfSSL Leaving ProcessPeerCerts, return 0
+wolfSSL Leaving DoTls13Certificate, return 0
+wolfSSL Leaving DoTls13HandShakeMsgType(), return 0
+Shrinking input buffer
+wolfSSL Entering Dtls13DoScheduledWork
+wolfSSL Entering RetrySendAlert
+growing input buffer
+[udp.c] send_packet len=60 slot=0
+[udp.c] send_packet len=60 slot=1
+wolfSSL Entering wolfSSL_dtls_got_timeout
+wolfSSL Entering SendDtls13Ack
+growing output buffer
+write ack records
+epoch 1074310091 seq 2
+epoch 1178597248 seq 2
+wolfSSL Entering BuildTls13Message
+wolfSSL Entering EncryptTls13
+wolfSSL Leaving BuildTls13Message, return 0
+wolfSSL Entering Dtls13RtxFlushAcks
+[IO_SEND] requested sz=56, peer_port=6000
+[IO_SEND] got tx buffer 0x8000102a
+[udp.c] send_packet len=98 slot=0
+[UDP] TX 56 bytes to port 6000
+Shrinking output buffer
+wolfSSL Entering DtlsMsgPoolTimeout
+wolfSSL Leaving DtlsMsgPoolTimeout(), return 0
+wolfSSL Entering Dtls13RtxSendBuffered
+[UDP] recv timeout
+wolfSSL error occurred, error = 323 line:13458 file:src/tls13.c
+wolfSSL Entering wolfSSL_get_error
+wolfSSL Leaving wolfSSL_get_error, return -323
+TLS 1.3
+wolfSSL Entering wolfSSL_connect_TLSv13
+wolfSSL Entering ReinitSSL
+wolfSSL Entering RetrySendAlert
+wolfSSL Entering RetrySendAlert
+[UDP] RX 110 bytes from 6000 -> 60000
+[UDP] RX handed 110 bytes to wolfSSL
+wolfSSL Entering DecryptTls13
+wolfSSL Entering Dtls13CheckWindow
+wolfSSL Entering Dtls13UpdateWindow
+wolfSSL Entering Dtls13RtxAddAck
+received record layer msg
+got HANDSHAKE
+wolfSSL Entering EarlySanityCheckMsgReceived
+wolfSSL Leaving EarlySanityCheckMsgReceived, return 0
+wolfSSL Entering Dtls13RtxMsgRecvd
+wolfSSL Entering DtlsMsgPoolReset
+wolfSSL Entering Dtls13RtxFlushBuffered
+wolfSSL Entering DoTls13HandShakeMsgType
+processing certificate verify
+wolfSSL Entering DoTls13CertificateVerify
+Peer sent ECC sig
+Doing ECC peer cert verify
+wolfSSL Entering EccVerify
+wolfSSL Leaving EccVerify, return 0
+wolfSSL Leaving DoTls13CertificateVerify, return 0
+wolfSSL Leaving DoTls13HandShakeMsgType(), return 0
+Shrinking input buffer
+wolfSSL Entering Dtls13DoScheduledWork
+wolfSSL Entering RetrySendAlert
+growing input buffer
+[UDP] RX 66 bytes from 6000 -> 60000
+[UDP] RX handed 66 bytes to wolfSSL
+wolfSSL Entering DecryptTls13
+wolfSSL Entering Dtls13CheckWindow
+wolfSSL Entering Dtls13UpdateWindow
+wolfSSL Entering Dtls13RtxAddAck
+received record layer msg
+got HANDSHAKE
+wolfSSL Entering EarlySanityCheckMsgReceived
+wolfSSL Leaving EarlySanityCheckMsgReceived, return 0
+wolfSSL Entering Dtls13RtxMsgRecvd
+wolfSSL Entering DtlsMsgPoolReset
+wolfSSL Entering Dtls13RtxFlushBuffered
+wolfSSL Entering DoTls13HandShakeMsgType
+processing finished
+wolfSSL Entering DoTls13Finished
+Derive Finished Secret
+Derive Finished Secret
+wolfSSL Leaving DoTls13Finished, return 0
+Derive Master Secret
+Derive Client Traffic Secret
+Derive Server Traffic Secret
+Derive Client Key
+Derive Server Key
+Derive Client IV
+Derive Server IV
+Derive SN Client key
+Derive SN Server key
+wolfSSL Entering Dtls13SetEpochKeys
+wolfSSL Leaving DoTls13HandShakeMsgType(), return 0
+Shrinking input buffer
+wolfSSL Entering Dtls13DoScheduledWork
+connect state: FIRST_REPLY_DONE
+connect state: FIRST_REPLY_FIRST
+connect state: FIRST_REPLY_SECOND
+wolfSSL Entering SendTls13Certificate
+wolfSSL Entering BuildMessage
+wolfSSL Entering BuildTls13Message
+growing output buffer
+wolfSSL Entering Dtls13RtxFlushAcks
+wolfSSL Entering BuildMessage
+wolfSSL Entering BuildTls13Message
+qwerty
+wolfSSL Entering Dtls13RtxNewRecord
+Dtls13RtxNewRecord completed
+Entering Dtls13SendNow
+entering Dtls13SendFragment
+isProtected done
+recordHeaderLength done
+no buffer_error
+wolfSSL Entering BuildTls13Message
+wolfSSL Entering EncryptTls13
+wolfSSL Leaving BuildTls13Message, return 0
+before FragIsInOutputBuffer function
+[IO_SEND] requested sz=641, peer_port=6000
+[IO_SEND] got tx buffer 0x8000182a
+[udp.c] send_packet len=683 slot=1
+[UDP] TX 641 bytes to port 6000
+Shrinking output buffer
+Dtls13SendFragment completed
+before rtx != null function
+rtxRecord is not null
+Entering Dtls13RtxAddRecord
+wolfSSL Entering Dtls13RtxAddRecord
+Dtls13SendOneFragmentRtx completed
+wolfSSL Leaving SendTls13Certificate, return 0
+sent: certificate
+connect state: FIRST_REPLY_THIRD
+wolfSSL Entering SendTls13CertificateVerify
+CheckAvailableSize() flushing buffer to make room for new message
+growing output buffer
+Trying ECC private key, RSA didn't work
+Using ECC private key
+wolfSSL Entering EccSign
+wolfSSL Leaving EccSign, return 0
+wolfSSL Entering BuildMessage
+wolfSSL Entering BuildTls13Message
+qwerty
+wolfSSL Entering Dtls13RtxNewRecord
+Dtls13RtxNewRecord completed
+Entering Dtls13SendNow
+entering Dtls13SendFragment
+isProtected done
+recordHeaderLength done
+no buffer_error
+wolfSSL Entering BuildTls13Message
+wolfSSL Entering EncryptTls13
+wolfSSL Leaving BuildTls13Message, return 0
+before FragIsInOutputBuffer function
+[IO_SEND] requested sz=108, peer_port=6000
+[IO_SEND] got tx buffer 0x8000102a
+[udp.c] send_packet len=150 slot=0
+[UDP] TX 108 bytes to port 6000
+Shrinking output buffer
+Dtls13SendFragment completed
+before rtx != null function
+rtxRecord is not null
+Entering Dtls13RtxAddRecord
+wolfSSL Entering Dtls13RtxAddRecord
+Dtls13SendOneFragmentRtx completed
+wolfSSL Leaving SendTls13CertificateVerify, return 0
+sent: certificate verify
+connect state: FIRST_REPLY_FOURTH
+wolfSSL Entering SendTls13Finished
+growing output buffer
+wolfSSL Entering Dtls13RtxFlushAcks
+wolfSSL Entering BuildMessage
+wolfSSL Entering BuildTls13Message
+qwerty
+wolfSSL Entering Dtls13RtxNewRecord
+Dtls13RtxNewRecord completed
+Entering Dtls13SendNow
+entering Dtls13SendFragment
+isProtected done
+recordHeaderLength done
+no buffer_error
+wolfSSL Entering BuildTls13Message
+wolfSSL Entering EncryptTls13
+wolfSSL Leaving BuildTls13Message, return 0
+before FragIsInOutputBuffer function
+[IO_SEND] requested sz=66, peer_port=6000
+[IO_SEND] got tx buffer 0x8000182a
+[udp.c] send_packet len=108 slot=1
+[UDP] TX 66 bytes to port 6000
+Shrinking output buffer
+Dtls13SendFragment completed
+before rtx != null function
+rtxRecord is not null
+Entering Dtls13RtxAddRecord
+wolfSSL Entering Dtls13RtxAddRecord
+Dtls13SendOneFragmentRtx completed
+Derive Resumption Secret
+wolfSSL Entering Dtls13SetEpochKeys
+wolfSSL Leaving SendTls13Finished, return 0
+sent: finished
+connect state: WAIT_FINISHED_ACK
+wolfSSL Entering RetrySendAlert
+growing input buffer
+[udp.c] send_packet len=60 slot=0
+[udp.c] send_packet len=60 slot=1
+wolfSSL Entering wolfSSL_dtls_got_timeout
+[UDP] recv timeout
+wolfSSL error occurred, error = 323 line:13576 file:src/tls13.c
+wolfSSL Entering wolfSSL_get_error
+wolfSSL Leaving wolfSSL_get_error, return -323
+TLS 1.3
+wolfSSL Entering wolfSSL_connect_TLSv13
+wolfSSL Entering ReinitSSL
+wolfSSL Entering RetrySendAlert
+wolfSSL Entering RetrySendAlert
+wolfSSL Entering wolfSSL_dtls_got_timeout
+wolfSSL Entering DtlsMsgPoolTimeout
+wolfSSL Leaving DtlsMsgPoolTimeout(), return 0
+wolfSSL Entering Dtls13RtxSendBuffered
+Dtls13Rtx One Record
+growing output buffer
+wolfSSL Entering Dtls13SetEpochKeys
+entering Dtls13SendFragment
+isProtected done
+recordHeaderLength done
+no buffer_error
+wolfSSL Entering BuildTls13Message
+wolfSSL Entering EncryptTls13
+wolfSSL Leaving BuildTls13Message, return 0
+before FragIsInOutputBuffer function
+[IO_SEND] requested sz=641, peer_port=6000
+[IO_SEND] got tx buffer 0x8000102a
+[udp.c] send_packet len=683 slot=0
+[UDP] TX 641 bytes to port 6000
+Shrinking output buffer
+Dtls13SendFragment completed
+Dtls13Rtx One Record
+growing output buffer
+entering Dtls13SendFragment
+isProtected done
+recordHeaderLength done
+no buffer_error
+wolfSSL Entering BuildTls13Message
+wolfSSL Entering EncryptTls13
+wolfSSL Leaving BuildTls13Message, return 0
+before FragIsInOutputBuffer function
+[IO_SEND] requested sz=108, peer_port=6000
+[IO_SEND] got tx buffer 0x8000182a
+[udp.c] send_packet len=150 slot=1
+[UDP] TX 108 bytes to port 6000
+Shrinking output buffer
+Dtls13SendFragment completed
+Dtls13Rtx One Record
+growing output buffer
+entering Dtls13SendFragment
+isProtected done
+recordHeaderLength done
+no buffer_error
+wolfSSL Entering BuildTls13Message
+wolfSSL Entering EncryptTls13
+wolfSSL Leaving BuildTls13Message, return 0
+before FragIsInOutputBuffer function
+[IO_SEND] requested sz=66, peer_port=6000
+[IO_SEND] got tx buffer 0x8000102a
+[udp.c] send_packet len=108 slot=0
+[UDP] TX 66 bytes to port 6000
+Shrinking output buffer
+Dtls13SendFragment completed
+[UDP] recv timeout
+wolfSSL error occurred, error = 323 line:13576 file:src/tls13.c
+wolfSSL Entering wolfSSL_get_error
+wolfSSL Leaving wolfSSL_get_error, return -323
+TLS 1.3
+wolfSSL Entering wolfSSL_connect_TLSv13
+wolfSSL Entering ReinitSSL
+wolfSSL Entering RetrySendAlert
+wolfSSL Entering RetrySendAlert
+[UDP] RX 40 bytes from 6000 -> 60000
+[UDP] RX handed 40 bytes to wolfSSL
+wolfSSL Entering DecryptTls13
+wolfSSL Entering Dtls13CheckWindow
+wolfSSL Entering Dtls13UpdateWindow
+received record layer msg
+got ACK
+read ack records
+epoch 0 seq 2
+Entering Dtls13FreeRtxBufferRecord
+Shrinking input buffer
+wolfSSL Entering Dtls13DoScheduledWork
+wolfSSL Entering Dtls13RtxSendBuffered
+Dtls13Rtx One Record
+growing output buffer
+entering Dtls13SendFragment
+isProtected done
+recordHeaderLength done
+no buffer_error
+wolfSSL Entering BuildTls13Message
+wolfSSL Entering EncryptTls13
+wolfSSL Leaving BuildTls13Message, return 0
+before FragIsInOutputBuffer function
+[IO_SEND] requested sz=108, peer_port=6000
+[IO_SEND] got tx buffer 0x8000182a
+[udp.c] send_packet len=150 slot=1
+[UDP] TX 108 bytes to port 6000
+Shrinking output buffer
+Dtls13SendFragment completed
+Dtls13Rtx One Record
+growing output buffer
+entering Dtls13SendFragment
+isProtected done
+recordHeaderLength done
+no buffer_error
+wolfSSL Entering BuildTls13Message
+wolfSSL Entering EncryptTls13
+wolfSSL Leaving BuildTls13Message, return 0
+before FragIsInOutputBuffer function
+[IO_SEND] requested sz=66, peer_port=6000
+[IO_SEND] got tx buffer 0x8000102a
+[udp.c] send_packet len=108 slot=0
+[UDP] TX 66 bytes to port 6000
+Shrinking output buffer
+Dtls13SendFragment completed
+wolfSSL Entering RetrySendAlert
+growing input buffer
+[UDP] RX 40 bytes from 6000 -> 60000
+[UDP] RX handed 40 bytes to wolfSSL
+wolfSSL Entering DecryptTls13
+wolfSSL Entering Dtls13CheckWindow
+wolfSSL Entering Dtls13UpdateWindow
+received record layer msg
+got ACK
+read ack records
+epoch 0 seq 2
+Entering Dtls13FreeRtxBufferRecord
+Shrinking input buffer
+wolfSSL Entering Dtls13DoScheduledWork
+wolfSSL Entering Dtls13RtxSendBuffered
+Dtls13Rtx One Record
+growing output buffer
+entering Dtls13SendFragment
+isProtected done
+recordHeaderLength done
+no buffer_error
+wolfSSL Entering BuildTls13Message
+wolfSSL Entering EncryptTls13
+wolfSSL Leaving BuildTls13Message, return 0
+before FragIsInOutputBuffer function
+[IO_SEND] requested sz=66, peer_port=6000
+[IO_SEND] got tx buffer 0x8000182a
+[udp.c] send_packet len=108 slot=1
+[UDP] TX 66 bytes to port 6000
+Shrinking output buffer
+Dtls13SendFragment completed
+wolfSSL Entering RetrySendAlert
+growing input buffer
+[UDP] RX 40 bytes from 6000 -> 60000
+[UDP] RX handed 40 bytes to wolfSSL
+wolfSSL Entering DecryptTls13
+wolfSSL Entering Dtls13CheckWindow
+wolfSSL Entering Dtls13UpdateWindow
+received record layer msg
+got ACK
+read ack records
+epoch 0 seq 2
+Shrinking input buffer
+wolfSSL Entering Dtls13DoScheduledWork
+wolfSSL Entering Dtls13RtxSendBuffered
+Dtls13Rtx One Record
+growing output buffer
+entering Dtls13SendFragment
+isProtected done
+recordHeaderLength done
+no buffer_error
+wolfSSL Entering BuildTls13Message
+wolfSSL Entering EncryptTls13
+wolfSSL Leaving BuildTls13Message, return 0
+before FragIsInOutputBuffer function
+[IO_SEND] requested sz=66, peer_port=6000
+[IO_SEND] got tx buffer 0x8000102a
+[udp.c] send_packet len=108 slot=0
+[UDP] TX 66 bytes to port 6000
+Shrinking output buffer
+Dtls13SendFragment completed
+wolfSSL Entering RetrySendAlert
+growing input buffer
+[UDP] RX 40 bytes from 6000 -> 60000
+[UDP] RX handed 40 bytes to wolfSSL
+wolfSSL Entering DecryptTls13
+wolfSSL Entering Dtls13CheckWindow
+wolfSSL Entering Dtls13UpdateWindow
+received record layer msg
+got ACK
+read ack records
+epoch 0 seq 2
+Entering Dtls13FreeRtxBufferRecord
+Shrinking input buffer
+wolfSSL Entering Dtls13DoScheduledWork
+connect state: FINISHED_DONE
+wolfSSL Entering FreeHandshakeResources
+Supported Versions extension free
+Cookie extension free
+PSK Key Exchange Modes extension free
+Key Share extension free
+Signature Algorithms extension to free
+Supported Groups extension free
+wolfSSL Leaving wolfSSL_connect_TLSv13, return 1
+Handshake complete in 962543759 cycles (~962543 ms at 1000000 Hz).
+wolfSSL Entering wolfSSL_get_cipher
+wolfSSL Entering wolfSSL_get_current_cipher
+wolfSSL Entering wolfSSL_CIPHER_get_name
+Negotiated Cipher: TLS13-AES128-GCM-SHA256
+wolfSSL Entering wolfSSL_get_version
+Negotiated Version: DTLSv1.3
+wolfSSL Entering wolfSSL_write
+wolfSSL Entering wolfSSL_write
+wolfSSL Entering RetrySendAlert
+wolfSSL Entering Dtls13SetEpochKeys
+wolfSSL Entering BuildMessage
+wolfSSL Entering BuildTls13Message
+growing output buffer
+wolfSSL Entering BuildTls13Message
+wolfSSL Entering EncryptTls13
+wolfSSL Leaving BuildTls13Message, return 0
+[IO_SEND] requested sz=59, peer_port=6000
+[IO_SEND] got tx buffer 0x8000182a
+[udp.c] send_packet len=101 slot=1
+[UDP] TX 59 bytes to port 6000
+Shrinking output buffer
+wolfSSL Entering BuildMessage
+wolfSSL Entering BuildTls13Message
+wolfSSL Leaving wolfSSL_write, return 37
+Sent 37 bytes of application data.
+wolfSSL Entering wolfSSL_read
+wolfSSL Entering wolfSSL_read_internal
+wolfSSL Entering ReceiveData
+wolfSSL Entering RetrySendAlert
+growing input buffer
+[UDP] RX 40 bytes from 6000 -> 60000
+[UDP] RX handed 40 bytes to wolfSSL
+wolfSSL Entering DecryptTls13
+wolfSSL Entering Dtls13CheckWindow
+wolfSSL Entering Dtls13UpdateWindow
+received record layer msg
+got ACK
+read ack records
+epoch 0 seq 2
+Shrinking input buffer
+wolfSSL Entering Dtls13DoScheduledWork
+wolfSSL Entering RetrySendAlert
+growing input buffer
+[udp.c] send_packet len=60 slot=0
+[udp.c] send_packet len=60 slot=1
+wolfSSL Entering wolfSSL_dtls_got_timeout
+wolfSSL Entering DtlsMsgPoolTimeout
+wolfSSL Leaving DtlsMsgPoolTimeout(), return 0
+wolfSSL Entering Dtls13RtxSendBuffered
+[UDP] recv timeout
+wolfSSL error occurred, error = 323 line:26238 file:src/internal.c
+wolfSSL Leaving wolfSSL_read_internal, return -323
+wolfSSL Entering wolfSSL_get_error
+wolfSSL Leaving wolfSSL_get_error, return -323
+wolfSSL_read failed: 2
+wolfSSL Entering wolfSSL_free
+Free SSL: 0x400abc68
+Free'ing client ssl
+Shrinking input buffer
+wolfSSL Entering DtlsMsgPoolReset
+wolfSSL Entering Dtls13RtxFlushBuffered
+wolfSSL Entering wolfSSL_FreeSession
+wolfSSL_FreeSession full free
+wolfSSL Entering Dtls13RtxFlushAcks
+wolfSSL Entering DtlsMsgPoolReset
+wolfSSL Entering Dtls13RtxFlushBuffered
+wolfSSL Entering Dtls13RtxFlushBuffered
+CTX ref count not 0 yet, no free
+wolfSSL Leaving wolfSSL_free, return 0
+wolfSSL Entering wolfSSL_CTX_free
+CTX ref count down to 0, doing full free
+wolfSSL Entering wolfSSL_CertManagerFree
+wolfSSL Leaving wolfSSL_CTX_free, return 0
+wolfSSL Entering wolfSSL_Cleanup
+wolfSSL Entering wolfCrypt_Cleanup
+Demo PASSED.
