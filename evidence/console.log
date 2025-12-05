@@ -1,3 +1,49 @@
+[sudo] password for subhanshu: 
+[jtagremote] loaded (0x58f209c552f0)
+[xgmii_ethernet] loaded (0x58f209c552f0)
+[spdeeprom] loaded (addr = 0x0)
+[clocker] loaded
+[gmii_ethernet] loaded (0x58f209c552f0)
+[ethernet] loaded (0x58f209c552f0)
+[serial2console] loaded (0x58f209c552f0)
+[serial2tcp] loaded (0x58f209c552f0)
+MDEBUG: Save time: -1, load_time: 0
+[clocker] sys_clk: freq_hz=1000000, phase_deg=0
+
+        __   _ __      _  __
+       / /  (_) /____ | |/_/
+      / /__/ / __/ -_)>  <
+     /____/_/\__/\__/_/|_|
+   Build your hardware, easily!
+
+ (c) Copyright 2012-2025 Enjoy-Digital
+ (c) Copyright 2007-2015 M-Labs
+
+ BIOS built on Dec  5 2025 22:54:30
+ BIOS CRC passed (07522035)
+
+ LiteX git sha1: b789578
+
+--=============== SoC ==================--
+CPU:            VexRiscv_Full @ 1MHz
+BUS:            wishbone 32-bit @ 4GiB
+CSR:            32-bit data big ordering
+ROM:            128.0KiB
+SRAM:           8.0KiB
+MAIN-RAM:       100.0MiB
+
+--========== Initialization ============--
+Ethernet init...
+Local IP: 192.168.1.50
+
+
+--============== Boot ==================--
+Booting from serial...
+Press Q or ESC to abort boot completely.
+sL5DdSMmkekro
+Timeout
+Executing booted program at 0x40000000
+
 --============= Liftoff! ===============--
 
 LiteX DTLS 1.3 Dilithium PQC client (wolfSSL)
@@ -268,7 +314,7 @@ wolfSSL Entering wolfSSL_dtls_got_timeout
 wolfSSL Entering SendDtls13Ack
 growing output buffer
 write ack records
-epoch 1074310091 seq 0
+epoch 1074309323 seq 0
 epoch 1178597248 seq 2
 wolfSSL Entering BuildTls13Message
 wolfSSL Entering EncryptTls13
@@ -375,7 +421,7 @@ wolfSSL Entering wolfSSL_dtls_got_timeout
 wolfSSL Entering SendDtls13Ack
 growing output buffer
 write ack records
-epoch 1074310091 seq 2
+epoch 1074309323 seq 2
 epoch 1178597248 seq 2
 wolfSSL Entering BuildTls13Message
 wolfSSL Entering EncryptTls13
@@ -398,8 +444,8 @@ wolfSSL Entering wolfSSL_connect_TLSv13
 wolfSSL Entering ReinitSSL
 wolfSSL Entering RetrySendAlert
 wolfSSL Entering RetrySendAlert
-[UDP] RX 110 bytes from 6000 -> 60000
-[UDP] RX handed 110 bytes to wolfSSL
+[UDP] RX 108 bytes from 6000 -> 60000
+[UDP] RX handed 108 bytes to wolfSSL
 wolfSSL Entering DecryptTls13
 wolfSSL Entering Dtls13CheckWindow
 wolfSSL Entering Dtls13UpdateWindow
@@ -765,7 +811,7 @@ Key Share extension free
 Signature Algorithms extension to free
 Supported Groups extension free
 wolfSSL Leaving wolfSSL_connect_TLSv13, return 1
-Handshake complete in 962543759 cycles (~962543 ms at 1000000 Hz).
+Handshake complete in 962408434 cycles (~962408 ms at 1000000 Hz).
 wolfSSL Entering wolfSSL_get_cipher
 wolfSSL Entering wolfSSL_get_current_cipher
 wolfSSL Entering wolfSSL_CIPHER_get_name
@@ -809,22 +855,25 @@ Shrinking input buffer
 wolfSSL Entering Dtls13DoScheduledWork
 wolfSSL Entering RetrySendAlert
 growing input buffer
-[udp.c] send_packet len=60 slot=0
-[udp.c] send_packet len=60 slot=1
-wolfSSL Entering wolfSSL_dtls_got_timeout
-wolfSSL Entering DtlsMsgPoolTimeout
-wolfSSL Leaving DtlsMsgPoolTimeout(), return 0
-wolfSSL Entering Dtls13RtxSendBuffered
-[UDP] recv timeout
-wolfSSL error occurred, error = 323 line:26238 file:src/internal.c
-wolfSSL Leaving wolfSSL_read_internal, return -323
-wolfSSL Entering wolfSSL_get_error
-wolfSSL Leaving wolfSSL_get_error, return -323
-wolfSSL_read failed: 2
-wolfSSL Entering wolfSSL_free
-Free SSL: 0x400abc68
-Free'ing client ssl
+[UDP] RX 59 bytes from 6000 -> 60000
+[UDP] RX handed 59 bytes to wolfSSL
+wolfSSL Entering DecryptTls13
+wolfSSL Entering Dtls13CheckWindow
+wolfSSL Entering Dtls13UpdateWindow
+received record layer msg
+got app DATA
+wolfSSL Entering Dtls13DoScheduledWork
 Shrinking input buffer
+wolfSSL Leaving ReceiveData(), return 37
+wolfSSL Leaving wolfSSL_read_internal, return 37
+Received 37 bytes over DTLS.
+[RX] decrypted payload (37 bytes):
+48 65 6C 6C 6F 20 66 72 6F 6D 20 4C 69 74 65 58 
+20 50 51 43 2D 44 54 4C 53 20 31 2E 33 20 63 6C 
+69 65 6E 74 00 
+wolfSSL Entering wolfSSL_free
+Free SSL: 0x400ab940
+Free'ing client ssl
 wolfSSL Entering DtlsMsgPoolReset
 wolfSSL Entering Dtls13RtxFlushBuffered
 wolfSSL Entering wolfSSL_FreeSession
@@ -841,4 +890,9 @@ wolfSSL Entering wolfSSL_CertManagerFree
 wolfSSL Leaving wolfSSL_CTX_free, return 0
 wolfSSL Entering wolfSSL_Cleanup
 wolfSSL Entering wolfCrypt_Cleanup
+DEBUG: run_dtls13_demo returned with status: 0
 Demo PASSED.
+Handshake duration (client): 962408434 cycles (~962408 ms at 1000000 Hz)
+PQC key exchange cycles (within handshake): 962408434 cycles
+Data exchange (throughput): 37 bytes in 1343 ms -> ~220 kbit/s
+Footprint: ROM (text+rodata) 566064 bytes, RAM static (data+bss) 2328 bytes
