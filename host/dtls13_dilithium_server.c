@@ -7,6 +7,7 @@
 #include <string.h>
 #include <sys/select.h>
 #include <sys/socket.h>
+#include <sys/time.h>
 #include <unistd.h>
 
 #include <wolfssl/options.h>
@@ -239,6 +240,8 @@ int main(int argc, char** argv)
     
     printf("\n=== Starting DTLS 1.3 Handshake ===\n");
     printf("Waiting for client handshake...\n");
+    struct timeval hs_start;
+    gettimeofday(&hs_start, NULL);
     int ret;
     int handshake_attempts = 0;
     
@@ -287,9 +290,14 @@ int main(int argc, char** argv)
         return 1;
     }
     
+    struct timeval hs_end;
+    gettimeofday(&hs_end, NULL);
+    long hs_ms = (hs_end.tv_sec - hs_start.tv_sec) * 1000L +
+                 (hs_end.tv_usec - hs_start.tv_usec) / 1000L;
     const char* cipher = wolfSSL_get_cipher(ssl);
     const char* version = wolfSSL_get_version(ssl);
     printf("\n=== Handshake Complete ===\n");
+    printf("Handshake time: %ld ms\n", hs_ms);
     printf("Protocol version: %s\n", version);
     printf("Cipher suite: %s\n", cipher);
     printf("Client certificate validated with PQC!\n");

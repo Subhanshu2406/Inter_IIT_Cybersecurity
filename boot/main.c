@@ -62,6 +62,10 @@
 #define DTLS_MTU           1200
 #define DTLS_MAX_RX        1600
 #define DTLS_APP_MSG       "Hello from LiteX PQC-DTLS 1.3 client"
+#define CPU_HZ_EST         1000000u  // approximate CPU clock for cycle->time conversion
+
+static uint64_t g_hs_cycles = 0;
+static uint64_t g_hs_ms     = 0;
 
 static const uint8_t kLocalMac[6] = {
     LOCAL_MAC0, LOCAL_MAC1, LOCAL_MAC2,
@@ -137,6 +141,17 @@ int CustomRngGenerateBlock(unsigned char *output, unsigned int sz)
         output[i] = (unsigned char)(v >> 24);
     }
     return 0;
+}
+
+static uint64_t cycle_count(void)
+{
+#if defined(__riscv)
+    uint64_t cycles = 0;
+    asm volatile("rdcycle %0" : "=r"(cycles));
+    return cycles;
+#else
+    return 0;
+#endif
 }
 
 // ------------------------ UDP RX state ------------------------
@@ -376,6 +391,7 @@ static int run_dtls13_demo(void)
     wolfSSL_SetIOWriteCtx(ssl, &net);
     
     printf("Starting DTLS 1.3 handshake with Dilithium PQC certificates...\n");
+    uint64_t hs_start_cycles = cycle_count();
     int ret;
     int attempts = 0;
     const int kMaxAttempts = 300;
@@ -407,7 +423,15 @@ static int run_dtls13_demo(void)
         wolfSSL_Cleanup();
         return -1;
     }
-    printf("Handshake complete.\n");
+    uint64_t hs_end_cycles = cycle_count();
+    uint64_t hs_cycles = hs_end_cycles - hs_start_cycles;
+    uint64_t hs_ms = (CPU_HZ_EST > 0u) ? (hs_cycles * 1000u / CPU_HZ_EST) : 0u;
+    g_hs_cycles = hs_cycles;
+    g_hs_ms = hs_ms;
+    printf("Handshake complete in %llu cycles (~%llu ms at %u Hz).\n",
+           (unsigned long long)hs_cycles,
+           (unsigned long long)hs_ms,
+           CPU_HZ_EST);
     printf("Negotiated Cipher: %s\n", wolfSSL_get_cipher(ssl));
     printf("Negotiated Version: %s\n", wolfSSL_get_version(ssl));
 
@@ -467,6 +491,12 @@ int main(void)
     int status = run_dtls13_demo();
     printf("DEBUG: run_dtls13_demo returned with status: %d\n", status);
     printf("Demo %s.\n", (status == 0) ? "PASSED" : "FAILED");
+    if (status == 0 && g_hs_cycles > 0) {
+        printf("Handshake duration (client): %llu cycles (~%llu ms at %u Hz)\n",
+               (unsigned long long)g_hs_cycles,
+               (unsigned long long)g_hs_ms,
+               CPU_HZ_EST);
+    }
 
     return 0;
 }
