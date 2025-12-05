@@ -66,6 +66,9 @@
 
 static uint64_t g_hs_cycles = 0;
 static uint64_t g_hs_ms     = 0;
+static uint64_t g_data_cycles = 0;
+static uint64_t g_data_ms     = 0;
+static uint32_t g_data_bytes  = 0;
 
 static const uint8_t kLocalMac[6] = {
     LOCAL_MAC0, LOCAL_MAC1, LOCAL_MAC2,
@@ -437,6 +440,7 @@ static int run_dtls13_demo(void)
 
     // Send application data
     const char app_msg[] = DTLS_APP_MSG;
+    uint64_t data_start_cycles = cycle_count();
     ret = wolfSSL_write(ssl, app_msg, (int)sizeof(app_msg));
     if (ret != (int)sizeof(app_msg)) {
         int err = wolfSSL_get_error(ssl, ret);
@@ -461,6 +465,10 @@ static int run_dtls13_demo(void)
         wolfSSL_Cleanup();
         return -1;
     }
+    uint64_t data_end_cycles = cycle_count();
+    g_data_cycles = data_end_cycles - data_start_cycles;
+    g_data_ms = (CPU_HZ_EST > 0u) ? (g_data_cycles * 1000u / CPU_HZ_EST) : 0u;
+    g_data_bytes = (uint32_t)ret;
 
     printf("Received %d bytes over DTLS.\n", ret);
     dump_bytes("[RX] decrypted payload", rx_buf, (unsigned)ret);
@@ -496,6 +504,15 @@ int main(void)
                (unsigned long long)g_hs_cycles,
                (unsigned long long)g_hs_ms,
                CPU_HZ_EST);
+    }
+    if (status == 0 && g_data_cycles > 0 && g_data_ms > 0) {
+        // Throughput over the single app-data exchange
+        uint64_t kbps = (uint64_t)g_data_bytes * 8u;
+        kbps = (kbps * 1000u) / g_data_ms; // kbit/s (approx, since bytes ~ 1KB)
+        printf("Data exchange (throughput): %u bytes in %llu ms -> ~%llu kbit/s\n",
+               g_data_bytes,
+               (unsigned long long)g_data_ms,
+               (unsigned long long)kbps);
     }
 
     return 0;
