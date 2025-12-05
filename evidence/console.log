@@ -896,3 +896,113 @@ Handshake duration (client): 962408434 cycles (~962408 ms at 1000000 Hz)
 PQC key exchange cycles (within handshake): 962408434 cycles
 Data exchange (throughput): 37 bytes in 1343 ms -> ~220 kbit/s
 Footprint: ROM (text+rodata) 566064 bytes, RAM static (data+bss) 2328 bytes
+
+
+
+
+server logs:
+wolfSSL Entering ReceiveData
+wolfSSL Entering RetrySendAlert
+wolfSSL error occurred, error = -323
+wolfSSL Leaving wolfSSL_read_internal, return -323
+wolfSSL Entering wolfSSL_get_error
+wolfSSL Leaving wolfSSL_get_error, return -323
+[Data] Select timeout (no app data yet)
+wolfSSL Entering wolfSSL_read
+wolfSSL Entering wolfSSL_read_internal
+wolfSSL Entering ReceiveData
+wolfSSL Entering RetrySendAlert
+wolfSSL error occurred, error = -323
+wolfSSL Leaving wolfSSL_read_internal, return -323
+wolfSSL Entering wolfSSL_get_error
+wolfSSL Leaving wolfSSL_get_error, return -323
+[Data] Select timeout (no app data yet)
+wolfSSL Entering wolfSSL_read
+wolfSSL Entering wolfSSL_read_internal
+wolfSSL Entering ReceiveData
+wolfSSL Entering RetrySendAlert
+wolfSSL error occurred, error = -323
+wolfSSL Leaving wolfSSL_read_internal, return -323
+wolfSSL Entering wolfSSL_get_error
+wolfSSL Leaving wolfSSL_get_error, return -323
+[Data] Select timeout (no app data yet)
+wolfSSL Entering wolfSSL_read
+wolfSSL Entering wolfSSL_read_internal
+wolfSSL Entering ReceiveData
+wolfSSL Entering RetrySendAlert
+wolfSSL error occurred, error = -323
+wolfSSL Leaving wolfSSL_read_internal, return -323
+wolfSSL Entering wolfSSL_get_error
+wolfSSL Leaving wolfSSL_get_error, return -323
+[Data] Select timeout (no app data yet)
+wolfSSL Entering wolfSSL_read
+wolfSSL Entering wolfSSL_read_internal
+wolfSSL Entering ReceiveData
+wolfSSL Entering RetrySendAlert
+wolfSSL error occurred, error = -323
+wolfSSL Leaving wolfSSL_read_internal, return -323
+wolfSSL Entering wolfSSL_get_error
+wolfSSL Leaving wolfSSL_get_error, return -323
+[Data] Select timeout (no app data yet)
+wolfSSL Entering wolfSSL_read
+wolfSSL Entering wolfSSL_read_internal
+wolfSSL Entering ReceiveData
+wolfSSL Entering RetrySendAlert
+wolfSSL error occurred, error = -323
+wolfSSL Leaving wolfSSL_read_internal, return -323
+wolfSSL Entering wolfSSL_get_error
+wolfSSL Leaving wolfSSL_get_error, return -323
+[Data] Select timeout (no app data yet)
+wolfSSL Entering wolfSSL_read
+wolfSSL Entering wolfSSL_read_internal
+wolfSSL Entering ReceiveData
+wolfSSL Entering RetrySendAlert
+wolfSSL error occurred, error = -323
+wolfSSL Leaving wolfSSL_read_internal, return -323
+wolfSSL Entering wolfSSL_get_error
+wolfSSL Leaving wolfSSL_get_error, return -323
+[Data] Select timeout (no app data yet)
+wolfSSL Entering wolfSSL_read
+wolfSSL Entering wolfSSL_read_internal
+wolfSSL Entering ReceiveData
+wolfSSL Entering RetrySendAlert
+wolfSSL error occurred, error = -323
+wolfSSL Leaving wolfSSL_read_internal, return -323
+wolfSSL Entering wolfSSL_get_error
+wolfSSL Leaving wolfSSL_get_error, return -323
+[Data] Select timeout (no app data yet)
+wolfSSL Entering wolfSSL_read
+wolfSSL Entering wolfSSL_read_internal
+wolfSSL Entering ReceiveData
+wolfSSL Entering RetrySendAlert
+wolfSSL error occurred, error = -323
+wolfSSL Leaving wolfSSL_read_internal, return -323
+wolfSSL Entering wolfSSL_get_error
+wolfSSL Leaving wolfSSL_get_error, return -323
+[Data] Select timeout (no app data yet)
+wolfSSL Entering wolfSSL_read
+wolfSSL Entering wolfSSL_read_internal
+wolfSSL Entering ReceiveData
+wolfSSL Entering RetrySendAlert
+wolfSSL error occurred, error = -323
+wolfSSL Leaving wolfSSL_read_internal, return -323
+wolfSSL Entering wolfSSL_get_error
+wolfSSL Leaving wolfSSL_get_error, return -323
+[Data] Select timeout (no app data yet)
+wolfSSL Entering wolfSSL_read
+wolfSSL Entering wolfSSL_read_internal
+wolfSSL Entering ReceiveData
+wolfSSL Entering RetrySendAlert
+wolfSSL error occurred, error = -323
+wolfSSL Leaving wolfSSL_read_internal, return -323
+wolfSSL Entering wolfSSL_get_error
+wolfSSL Leaving wolfSSL_get_error, return -323
+[Data] Select timeout (no app data yet)
+wolfSSL Entering wolfSSL_read
+wolfSSL Entering wolfSSL_read_internal
+wolfSSL Entering ReceiveData
+wolfSSL Entering RetrySendAlert
+wolfSSL error occurred, error = -323
+wolfSSL Leaving wolfSSL_read_internal, return -323
+wolfSSL Entering wolfSSL_get_error
+wolfSSL Leaving wolfSSL_get_error, return -323
