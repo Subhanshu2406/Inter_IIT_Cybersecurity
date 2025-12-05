@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <unistd.h>
 
 #include <irq.h>
 #include <libbase/uart.h>
@@ -69,6 +70,20 @@ static uint64_t g_hs_ms     = 0;
 static uint64_t g_data_cycles = 0;
 static uint64_t g_data_ms     = 0;
 static uint32_t g_data_bytes  = 0;
+static uintptr_t g_heap_base      = 0;
+static uintptr_t g_heap_after_hs  = 0;
+static uintptr_t g_heap_after_app = 0;
+
+// Weak linker symbols for section boundaries (sizes computed if available).
+extern char _ftext[] __attribute__((weak));
+extern char _etext[] __attribute__((weak));
+extern char __rodata_start[] __attribute__((weak));
+extern char __rodata_end[] __attribute__((weak));
+extern char _fdata[] __attribute__((weak));
+extern char _edata[] __attribute__((weak));
+extern char _fbss[] __attribute__((weak));
+extern char _ebss[] __attribute__((weak));
+extern char _end[] __attribute__((weak)); // typically start of heap
 
 static const uint8_t kLocalMac[6] = {
     LOCAL_MAC0, LOCAL_MAC1, LOCAL_MAC2,
@@ -155,6 +170,21 @@ static uint64_t cycle_count(void)
 #else
     return 0;
 #endif
+}
+
+static uintptr_t span_bytes(const char* start, const char* end)
+{
+    if (start == NULL || end == NULL)
+        return 0;
+    return (uintptr_t)end - (uintptr_t)start;
+}
+
+static uintptr_t heap_usage_bytes(void)
+{
+    void* brk = sbrk(0);
+    if (brk == (void*)-1 || _end == NULL)
+        return 0;
+    return (uintptr_t)brk - (uintptr_t)_end;
 }
 
 // ------------------------ UDP RX state ------------------------
@@ -395,6 +425,7 @@ static int run_dtls13_demo(void)
     
     printf("Starting DTLS 1.3 handshake with Dilithium PQC certificates...\n");
     uint64_t hs_start_cycles = cycle_count();
+    g_heap_base = heap_usage_bytes();
     int ret;
     int attempts = 0;
     const int kMaxAttempts = 300;
@@ -431,6 +462,7 @@ static int run_dtls13_demo(void)
     uint64_t hs_ms = (CPU_HZ_EST > 0u) ? (hs_cycles * 1000u / CPU_HZ_EST) : 0u;
     g_hs_cycles = hs_cycles;
     g_hs_ms = hs_ms;
+    g_heap_after_hs = heap_usage_bytes();
     printf("Handshake complete in %llu cycles (~%llu ms at %u Hz).\n",
            (unsigned long long)hs_cycles,
            (unsigned long long)hs_ms,
@@ -469,6 +501,7 @@ static int run_dtls13_demo(void)
     g_data_cycles = data_end_cycles - data_start_cycles;
     g_data_ms = (CPU_HZ_EST > 0u) ? (g_data_cycles * 1000u / CPU_HZ_EST) : 0u;
     g_data_bytes = (uint32_t)ret;
+    g_heap_after_app = heap_usage_bytes();
 
     printf("Received %d bytes over DTLS.\n", ret);
     dump_bytes("[RX] decrypted payload", rx_buf, (unsigned)ret);
@@ -513,6 +546,25 @@ int main(void)
                g_data_bytes,
                (unsigned long long)g_data_ms,
                (unsigned long long)kbps);
+    }
+    if (status == 0) {
+        uintptr_t text_sz   = span_bytes(_ftext, _etext);
+        uintptr_t rodata_sz = span_bytes(__rodata_start, __rodata_end);
+        uintptr_t data_sz   = span_bytes(_fdata, _edata);
+        uintptr_t bss_sz    = span_bytes(_fbss, _ebss);
+        uintptr_t rom_sz    = text_sz + rodata_sz;
+        uintptr_t ram_static = data_sz + bss_sz;
+        printf("Footprint: ROM (text+rodata) %lu bytes, RAM static (data+bss) %lu bytes\n",
+               (unsigned long)rom_sz, (unsigned long)ram_static);
+        if (g_heap_base || g_heap_after_hs || g_heap_after_app) {
+            uintptr_t heap_hs_delta  = (g_heap_after_hs > g_heap_base) ? (g_heap_after_hs - g_heap_base) : 0;
+            uintptr_t heap_app_delta = (g_heap_after_app > g_heap_after_hs) ? (g_heap_after_app - g_heap_after_hs) : 0;
+            printf("Heap usage: base %lu bytes, +%lu during handshake, +%lu after app data (total %lu)\n",
+                   (unsigned long)g_heap_base,
+                   (unsigned long)heap_hs_delta,
+                   (unsigned long)heap_app_delta,
+                   (unsigned long)(g_heap_after_app));
+        }
     }
 
     return 0;
