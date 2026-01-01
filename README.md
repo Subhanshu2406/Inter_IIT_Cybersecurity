@@ -1,3 +1,13 @@
+# Inter-IIT Tech-Meet 14.0 [Cybersecurity Challenge]   
+
+### Problem Statement
+The challenge was to design and demonstrate a **post-quantum secure DTLS 1.3 communication channel** with full mutual authentication between a server and a **bare-metal RISC-V IoT device**, operating under severe constraints on memory, compute, and latency.
+
+### Our Solution
+We implemented a **DTLS 1.3 stack integrated with Post-Quantum Cryptography**, using **ML-Kyber-512 for key exchange** and **Dilithium-2 for authentication**, optimized to run on a **LiteX-simulated bare-metal RISC-V platform**, achieving secure and quantum-resistant communication with minimal ROM/RAM footprint.
+
+---
+
 # RISC-V + LiteX + WolfSSL/WolfCrypt + Dilithium PQC - Complete Setup Guide
 
 This guide provides a systematic, step-by-step procedure to set up a complete RISC-V embedded development environment with Post-Quantum Cryptography ( ML-Kyber-512 and Dilithium2) support. Follow each section in order to successfully establish the development environment.
